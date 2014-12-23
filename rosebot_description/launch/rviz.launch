@@ -1,0 +1,14 @@
+<launch>
+
+  <include file="$(find rosebot_description)/launch/no_viz.launch" />
+
+  <param name="robot_description" textfile="$(find rosebot_description)/urdf/rosebot.urdf" />
+  <node pkg="rviz" type="rviz" name="rviz" output="screen"/>
+  <node pkg="rosebot_description" type="diff_tf.py" name="diff_tf">
+     <rosparam param="rate">8.0</rosparam>
+     <rosparam param="base_width">0.245</rosparam>
+  </node>
+
+  <!-- more default parameters can be changed here -->
+
+</launch>	
