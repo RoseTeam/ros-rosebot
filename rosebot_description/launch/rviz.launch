@@ -1,6 +1,6 @@
 <launch>
 
-  <include file="$(find rosebot_description)/launch/no_viz.launch" />
+  <include file="$(find rosebot_description)/launch/rosebot.launch" />
 
   <param name="robot_description" textfile="$(find rosebot_description)/urdf/rosebot.urdf" />
   <node pkg="rviz" type="rviz" name="rviz" output="screen"/>

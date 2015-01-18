@@ -31,4 +31,21 @@
       <rosparam param="rolling_pts">5</rosparam>
   </node>
 	-->
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="carte" default="true"/>
+  
+  <group if="$(arg carte)">
+    <node name="carte_commande" pkg="rosebot_description" type="carte_commande.py" output="screen">
+		<remap from="odom" to="rosebot1/odom"/>
+	</node>
+  </group>
+
+  <node pkg="rosebot_description" type="goal_to_vel.py" name="goal_to_vel" output="screen">
+      <remap from="cmd_vel" to="rosebot1/cmd_vel"/>
+	  <remap from="odom" to="rosebot1/odom"/>
+  </node>
+
+  <!-- more default parameters can be changed here -->
+
 </launch>
