@@ -1,0 +1,17 @@
+<launch>
+  
+
+  #### Launch motors/ros interface node  ############################# 
+  <node name="interface" pkg="mot_rosbot" type="interface.py" output="screen" clear_params="true">
+
+  <param name="gainsPL/p" value="10.0" />
+
+  <rosparam file="$(find mot_rosbot)/launch/servoing.yaml" command="load"/>
+
+<!--<remap from="pose_estimator/pose" to ="fcu/pose" /> 
+<remap from="/turtle1/cmd_vel" to ="/mot_rosbot/twist" />-->
+  </node>
+
+
+
+</launch>

@@ -1,0 +1,17 @@
+<launch>
+  
+
+  #### Launch joy_node  ############################# 
+  <node name="joy_node" pkg="joy" type="joy_node" output="screen"  clear_params="true">
+  
+<!--<param name="joy_node/dev"  value="/dev/input/js1" /> -->
+<!--<remap from="pose_estimator/pose" to ="fcu/pose" /> -->
+
+  </node>
+
+   <node name="joy_interpreter_node" pkg="joy_interpreter" type="joy_interpreter_node" output="screen"  clear_params="true">
+  
+
+  </node>
+
+</launch>
