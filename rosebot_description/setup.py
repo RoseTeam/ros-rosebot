@@ -8,10 +8,10 @@ os.environ['DISTUTILS_DEBUG'] = "1"
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=[ 'aura', 'pygapp'],
+    packages=[ 'rosebotnav', 'pygapp'],
  	package_dir={'':'src'},
 	#include_package_data=True,
-    package_data={'aura': ['sauvegardes/robomovies.par', 'media/images/robomovies.jpg', 'media/fonts/*'],},
+    package_data={'rosebotnav': ['sauvegardes/*', 'media/images/robomovies.jpg', 'media/fonts/*'],},
 )
 
 setup(**setup_args)
