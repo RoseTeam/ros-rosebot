@@ -1,0 +1,4 @@
+uint8 state
+bool start_stop
+---
+bool start_stop
