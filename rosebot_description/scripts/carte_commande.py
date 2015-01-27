@@ -31,7 +31,15 @@ class CarteCommande(Simulation2d):
             
         RobotClass.AssBut = newMethod
     
-        
+        def ControleDirection(robot, avantArriere, gaucheDroite, deltaT):
+
+            w = robot.w -robot.w_max * gaucheDroite
+            v = robot.v_max * avantArriere
+            
+            self.publishVelTwist(v, w)
+
+        RobotClass.ControleDirection = ControleDirection
+    
     def spinOnce(self):
         
         Simulation2d.spinOnce(self)
