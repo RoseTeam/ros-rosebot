@@ -8,8 +8,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp 
   rospy
 )
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
+find_package(gazebo REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -82,20 +84,44 @@ catkin_package(
 #  LIBRARIES rosebot_description
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
-)
+CATKIN_DEPENDS
+	roscpp
+	rospy
 
+DEPENDS 
+	gazebo
+	SDF
+)
 ###########
 ## Build ##
 ###########
+
+# check c++11 / c++0x
+include(CheckCXXCompilerFlag)
+CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
+CHECK_CXX_COMPILER_FLAG("-std=c++0x" COMPILER_SUPPORTS_CXX0X)
+if(COMPILER_SUPPORTS_CXX11)
+    set(CMAKE_CXX_FLAGS "-std=c++11")
+elseif(COMPILER_SUPPORTS_CXX0X)
+    set(CMAKE_CXX_FLAGS "-std=c++0x")
+else()
+    message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
+endif()
+
+add_definitions(-fPIC) # what is this for?
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
 
+include_directories(${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS} ${GAZEBO_INCLUDE_DIRS})
+
+link_directories(${GAZEBO_LIBRARY_DIRS})
+
+
 ## Declare a cpp library
-# add_library(rosebot_description
-#   src/${PROJECT_NAME}/rosebot_description.cpp
-# )
+#add_library(rosebot_nav SHARED src/rosebot_nav.cpp src/mesh.cpp src/mesh_areas.cpp src/robomovies_arena.cpp src/triutils.cpp src/point2d.cpp src/triangle.cpp)
+#target_link_libraries(rosebot_nav ${GAZEBO_LIBRARIES} ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 ## Declare a cpp executable
 # add_executable(rosebot_description_node src/rosebot_description_node.cpp)

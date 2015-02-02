@@ -62,8 +62,9 @@ class Simulation2d(object):
         
         self.goal = None
         self.goal_orient = 0
-        self.robot.AssBut(Vec(1000,1500),itineraire=True)
         
+        self.robot.AssBut(Vec(240,2300),itineraire=True)
+
 
     #############################################################
     def spin(self):

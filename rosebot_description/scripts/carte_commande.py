@@ -39,7 +39,7 @@ class CarteCommande(Simulation2d):
             self.publishVelTwist(v, w)
 
         RobotClass.ControleDirection = ControleDirection
-    
+        
     def spinOnce(self):
         
         Simulation2d.spinOnce(self)
