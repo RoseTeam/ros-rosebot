@@ -39,10 +39,8 @@ class Simulation2d(object):
         nodename = rospy.get_name()      
         rospy.loginfo("%s started" % nodename)
 
-        self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=1)
-
         #rospy.Subscriber('odomgazebo', Odometry, self.odomCallback)
-        rospy.Subscriber('odom', Odometry, self.odomCallback)
+        self.odom_sub = rospy.Subscriber('odom', Odometry, self.odomCallback)
 
         self.rate = rospy.get_param("~rate", 50)
         self.timeout_ticks = rospy.get_param("~timeout_ticks", 2)
@@ -89,14 +87,6 @@ class Simulation2d(object):
         self.ticks_since_state += 1
         
     
-    def publishVelTwist(self, v, w):
-        twist = Twist()
-        
-        twist.linear.x = v
-        twist.angular.z = w
-
-        self.pub_cmd_vel.publish(twist)
-
     #############################################################
     def odomCallback(self,msg):
     #######################################

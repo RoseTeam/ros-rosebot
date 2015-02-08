@@ -29,11 +29,18 @@ class GoalToVel(Simulation2d):
     #############################################################
         Simulation2d.__init__(self)
 
-        rospy.Subscriber('goal', Pose2D, self.goalCallback)
-        rospy.Subscriber('odom', Odometry, self.odomCallback)
-        #rospy.Subscriber('odomduino', Odometry, self.odomCallback)
+        self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=1)
+        self.goal_subscriber = rospy.Subscriber('goal', Pose2D, self.goalCallback)
         
+  
+    def publishVelTwist(self, v, w):
+        twist = Twist()
         
+        twist.linear.x = v
+        twist.angular.z = w
+
+        self.pub_cmd_vel.publish(twist)
+      
     
     def publishCmdVel(self):
         
