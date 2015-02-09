@@ -5,93 +5,38 @@
 
 // ROS
 #include <ros/ros.h>
-#include <tf/transform_broadcaster.h>
-#include <tf/transform_listener.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose2D.h>
 #include <nav_msgs/Odometry.h>
-#include <sensor_msgs/JointState.h>
+#include "rosebot.h"
 
-// Custom Callback Queue
-#include <ros/callback_queue.h>
-#include <ros/advertise_options.h>
+class RosebotNav{
 
-// Boost
-#include <boost/thread.hpp>
-#include <boost/bind.hpp>
-
-class GazeboRosDiffDrive : public ModelPlugin {
 public:
 
-  void Load(physics::ModelPtr _parent, sdf::ElementPtr _sdf);
+	RosebotNav();
 
-protected:
-  virtual void UpdateChild();
-  virtual void FiniChild();
+	shared_ptr<Rosebot> robot_;
 
-private:
-  void publishOdometry(double step_time);
-  void getWheelVelocities();
-  void publishWheelTF(); /// publishes the wheel tf's
-  void publishWheelJointState();
-  void UpdateOdometryEncoder();
+    ros::NodeHandle nh_;
+
+    // Update Rate
+	double update_rate_;
+
+	nav_msgs::Odometry odom_;
+	geometry_msgs::Twist cmd_vel_;
 
 
-  GazeboRosPtr gazebo_ros_;
-  physics::ModelPtr parent;
-  event::ConnectionPtr update_connection_;
+	ros::Subscriber odometry_subscriber_;
+	ros::Subscriber goal_subscriber_;
+	ros::Publisher cmd_vel_publisher_;
 
-  double wheel_separation_;
-  double wheel_diameter_;
-  double wheel_torque;
-  double desired_wheel_speed_[2]; // in rad/s
-  double wheel_accel_; // in rad/s/s
-  double wheel_speed_instr_[2]; // in rad/s
 
-  std::vector<physics::JointPtr> joints_;
-
-  // ROS STUFF
-  ros::Publisher odometry_publisher_;
-  ros::Subscriber cmd_vel_subscriber_;
-  boost::shared_ptr<tf::TransformBroadcaster> transform_broadcaster_;
-  sensor_msgs::JointState joint_state_;
-  ros::Publisher joint_state_publisher_;      
-  nav_msgs::Odometry odom_;
-  std::string tf_prefix_;
-
-  boost::mutex lock;
-
-  std::string robot_namespace_;
-  std::string command_topic_;
-  std::string odometry_topic_;
-  std::string odometry_frame_;
-  std::string robot_base_frame_;
-  bool publish_tf_;
-  // Custom Callback Queue
-  ros::CallbackQueue queue_;
-  boost::thread callback_queue_thread_;
-  void QueueThread();
-
-  // DiffDrive stuff
-  void cmdVelCallback(const geometry_msgs::Twist::ConstPtr& cmd_msg);
-
-  double x_;
-  double rot_;
-  bool alive_;
-
-  // Update Rate
-  double update_rate_;
-  double update_period_;
-  common::Time last_update_time_;
+	// DiffDrive stuff
+	void goalCallback(const geometry_msgs::Pose2D::ConstPtr& msg);
+	void odomCallback(const nav_msgs::Odometry::ConstPtr& msg);
+	void publishCmdVel();
   
-  OdomSource odom_source_;
-  geometry_msgs::Pose2D pose_encoder_;
-  common::Time last_odom_update_;
-  
-// Flags
-bool publishWheelTF_;
-bool publishWheelJointState_;
-
 };
 
 #endif
